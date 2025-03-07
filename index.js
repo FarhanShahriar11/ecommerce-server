@@ -8,7 +8,15 @@ app.use(cors());
 app.use(express.json());
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ggstth2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ggstth2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+if (!process.env.NEXT_PUBLIC_MONGODB_URI) {
+  console.error("❌ MONGODB_URI is not defined in .env file");
+  process.exit(1); // Exit the app if MongoDB URI is missing
+}
+
+// ✅ Use the correct environment variable
+const uri = process.env.NEXT_PUBLIC_MONGODB_URI;
+
 
 const client = new MongoClient(uri, {
   serverApi: {
